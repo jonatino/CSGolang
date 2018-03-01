@@ -23,14 +23,12 @@ func processByName(name string) (uint32, error) {
 
 	snap := win32.CreateToolhelp32Snapshot(win32.TH32CS_SNAPALL, 0)
 
-	if !win32.Process32First(snap, &entry) {
-		return 0, errors.New(fmt.Sprintf("Process %s not found!", name))
-	}
-
-	for ok := true; ok; ok = win32.Process32Next(snap, &entry) { //Because why would GO have a fucking do while loop
-		processName := GetProcessName(&entry)
-		if processName == name {
-			return entry.ProcessID, nil
+	if win32.Process32First(snap, &entry) {
+		for while := true; while; while = win32.Process32Next(snap, &entry) { //Because why would GO have a fucking do while loop
+			processName := GetProcessName(&entry)
+			if processName == name {
+				return entry.ProcessID, nil
+			}
 		}
 	}
 
